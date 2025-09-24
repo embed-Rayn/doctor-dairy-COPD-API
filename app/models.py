@@ -1,0 +1,79 @@
+from pydantic import BaseModel, Field
+from typing import List, Optional
+
+# COPD 환자 평가 데이터 모델 (정의서.csv 기반)
+
+# 기본정보 그룹
+class BasicInfoData(BaseModel):
+    sex: int = Field(..., ge=1, le=2, description="성별: 1=남성, 2=여성")
+    birth: str = Field(..., description="생년월일 (YYYY-MM-DD)")
+    height: float = Field(..., gt=0, description="키 (cm)")
+    weight: float = Field(..., gt=0, description="몸무게 (kg)")
+    education: int = Field(..., ge=1, le=6, description="교육수준: 1~6")
+
+class BasicInfoRequest(BaseModel):
+    USER_UUID: str = Field(..., description="환자 식별자 (호환성)")
+    data: BasicInfoData
+
+# 산소포화도 측정 그룹
+class OximeterData(BaseModel):
+    pre_HR: float = Field(..., description="운동 전 심박수")
+    pre_SpO2: float = Field(..., description="운동 전 산소포화도")
+    post_HR: float = Field(..., description="운동 후 심박수")
+    post_SpO2: float = Field(..., description="운동 후 산소포화도")
+
+class OximeterRequest(BaseModel):
+    USER_UUID: str = Field(..., description="환자 식별자 (호환성)")
+    data: OximeterData
+
+# 의자 일어서기 검사 그룹
+class ChairStandData(BaseModel):
+    CS_count: float = Field(..., ge=0, description="30초간 의자 일어서기 횟수")
+
+class ChairStandRequest(BaseModel):
+    USER_UUID: str = Field(..., description="환자 식별자 (호환성)")
+    data: ChairStandData
+
+# 설문조사 그룹
+class SurveyVoiceData(BaseModel):
+    MBS: int = Field(..., ge=0, le=10, description="Modified Borg Scale: 0~10")
+    Borg_RPE: int = Field(..., ge=6, le=20, description="Rate of Perceived Exertion: 6~20")
+
+class SurveyVoiceRequest(BaseModel):
+    USER_UUID: str = Field(..., description="환자 식별자 (호환성)")
+    data: SurveyVoiceData
+
+# 설문조사 그룹
+class SurveyData(BaseModel):
+    CAT1: int = Field(..., ge=0, le=5, description="CAT 설문 1번: 0~5")
+    CAT2: int = Field(..., ge=0, le=5, description="CAT 설문 2번: 0~5")
+    CAT3: int = Field(..., ge=0, le=5, description="CAT 설문 3번: 0~5")
+    CAT4: int = Field(..., ge=0, le=5, description="CAT 설문 4번: 0~5")
+    CAT5: int = Field(..., ge=0, le=5, description="CAT 설문 5번: 0~5")
+    CAT6: int = Field(..., ge=0, le=5, description="CAT 설문 6번: 0~5")
+    CAT7: int = Field(..., ge=0, le=5, description="CAT 설문 7번: 0~5")
+    CAT8: int = Field(..., ge=0, le=5, description="CAT 설문 8번: 0~5")
+    CAT_sum: int = Field(..., ge=0, le=40, description="CAT 총합: 0~40")
+    mMRC: int = Field(..., ge=0, le=4, description="Modified Medical Research Council: 0~4")
+    Smoke_CAT1: int = Field(..., ge=1, le=2, description="흡연 유무: 1~2")
+    Smoke_CAT2: int = Field(..., ge=1, le=2, description="금연 여부: 1~2")
+    Smoke_CAT3: int = Field(..., ge=1, le=3, description="금연 기간: 1~3")
+    Smoke_CAT4: float = Field(..., ge=0, description="흡연량 (연속값)")
+
+class SurveyRequest(BaseModel):
+    USER_UUID: str = Field(..., description="환자 식별자 (호환성)")
+    data: SurveyData
+
+# 음성 데이터 그룹
+class VoiceData(BaseModel):
+    voice_file_path: str = Field(..., description="음성 파일 경로")
+    voice_file_name: str = Field(..., description="음성 파일명")
+    voice_duration: float = Field(..., gt=0, description="음성 길이 (초)")
+    voice_format: str = Field(..., description="음성 파일 형식 (wav, mp3, etc)")
+    voice_quality: Optional[str] = Field(None, description="음성 품질 (high, medium, low)")
+    transcription: Optional[str] = Field(None, description="음성 전사 텍스트")
+    analysis_result: Optional[str] = Field(None, description="음성 분석 결과")
+
+class VoiceRequest(BaseModel):
+    USER_UUID: str = Field(..., description="환자 식별자 (호환성)")
+    data: VoiceData

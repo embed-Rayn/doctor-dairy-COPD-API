@@ -201,10 +201,26 @@ Content-Type: multipart/form-data
 Form Data:
 - file: [audio file]
 - USER_UUID: PATIENT_001
-- voice_quality: high (optional)
 - transcription: 안녕하세요... (optional)
-- analysis_result: 분석 결과... (optional)
 ```
+
+**curl 예제:**
+```bash
+# 필수 파라미터만 사용
+curl -X POST "http://localhost:8000/app/copd/voice/file" \
+     -F "file=@./audio_sample.wav" \
+     -F "USER_UUID=patient-001"
+
+# 전사 텍스트 포함
+curl -X POST "http://localhost:8000/app/copd/voice/file" \
+     -F "file=@./audio_sample.wav" \
+     -F "USER_UUID=patient-001" \
+     -F "transcription=안녕하세요, 테스트입니다"
+```
+
+**저장 위치:**
+- 파일: `./data/voice_files/YYYYMMDD/USER_UUID_timestamp_randomid.wav`
+- 메타데이터: `./data/unknown_timestamp.json`
 
 ## 데이터 검증 규칙
 
@@ -244,6 +260,12 @@ curl -X POST http://localhost:8000/app/copd/basic \
       "education": 3
     }
   }'
+
+# 음성 파일 업로드 테스트
+curl -X POST http://localhost:8000/app/copd/voice/file \
+  -F "file=@./test_audio.wav" \
+  -F "USER_UUID=TEST_001" \
+  -F "transcription=테스트 음성입니다"
 ```
 
 ## 개발 가이드

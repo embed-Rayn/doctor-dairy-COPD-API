@@ -67,12 +67,7 @@ class SurveyRequest(BaseModel):
 # 음성 데이터 그룹
 class VoiceData(BaseModel):
     voice_file_path: str = Field(..., description="음성 파일 경로")
-    voice_file_name: str = Field(..., description="음성 파일명")
-    voice_duration: float = Field(..., gt=0, description="음성 길이 (초)")
-    voice_format: str = Field(..., description="음성 파일 형식 (wav, mp3, etc)")
-    voice_quality: Optional[str] = Field(None, description="음성 품질 (high, medium, low)")
     transcription: Optional[str] = Field(None, description="음성 전사 텍스트")
-    analysis_result: Optional[str] = Field(None, description="음성 분석 결과")
 
 class VoiceRequest(BaseModel):
     USER_UUID: str = Field(..., description="환자 식별자 (호환성)")

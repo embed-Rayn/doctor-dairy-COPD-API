@@ -52,16 +52,17 @@
     "Smoke_CAT4": 10.5  # float, continuous (흡연량)
 }
 
-# 음성 데이터 (Voice)
+# 음성 데이터 (Voice) - 메타데이터만
 {
-    "voice_file_path": "/workspace/voice/sample.wav",  # str, 음성 파일 경로
-    "voice_file_name": "sample.wav",  # str, 음성 파일명
-    "voice_duration": 45.2,  # float, 음성 길이 (초)
-    "voice_format": "wav",  # str, 음성 파일 형식
-    "voice_quality": "high",  # Optional[str], 음성 품질
-    "transcription": "안녕하세요...",  # Optional[str], 음성 전사 텍스트
-    "analysis_result": "분석 결과..."  # Optional[str], 음성 분석 결과
+    "voice_file_path": "./data/voice_files/20240924/sample.wav",  # str, 음성 파일 경로
+    "transcription": "안녕하세요..."  # Optional[str], 음성 전사 텍스트
 }
+
+# 음성 파일 직접 업로드 (multipart/form-data)
+curl -X POST "/app/copd/voice/file" \
+     -F "file=@./audio.wav" \
+     -F "USER_UUID=patient-001" \
+     -F "transcription=안녕하세요"
 ```
 
 ### 3. 엔드포인트 네이밍 규칙
@@ -92,8 +93,9 @@
 
 ### 서비스 레이어 패턴
 - `app/services/data_service.py`는 모든 데이터 그룹에 공통으로 사용
-- 현재는 JSON 파일 저장 구현, 향후 PostgreSQL 연동 예정
-- 음성 파일은 `/workspace/8889/voice_files` 디렉토리에 별도 저장
+- 현재는 JSON 파일 저장 구현 (`./data/` 디렉토리), 향후 PostgreSQL 연동 예정
+- 음성 파일은 `./data/voice_files/YYYYMMDD/` 디렉토리에 날짜별로 저장
+- 파일명 규칙: `{USER_UUID}_{timestamp}_{randomid}.{extension}`
 - 새로운 비즈니스 로직은 서비스 레이어에 추가
 
 ### 개발 환경 설정
@@ -147,6 +149,21 @@ app/
 
 ### API 테스트
 정의서.csv의 데이터 타입과 범위에 맞는 테스트 케이스 작성 필요
+
+**음성 파일 업로드 테스트 예제:**
+```bash
+# Windows PowerShell에서
+curl.exe -X POST "http://localhost:8000/app/copd/voice/file" \
+         -F "file=@./audio_sample.wav" \
+         -F "USER_UUID=patient-001" \
+         -F "transcription=테스트 음성입니다"
+
+# Linux/macOS에서
+curl -X POST "http://localhost:8000/app/copd/voice/file" \
+     -F "file=@./audio_sample.wav" \
+     -F "USER_UUID=patient-001" \
+     -F "transcription=테스트 음성입니다"
+```
 
 ### 운영 배포 (systemd)
 ```bash

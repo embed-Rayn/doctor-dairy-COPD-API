@@ -61,7 +61,7 @@
 # 음성 파일 직접 업로드 (multipart/form-data)
 curl -X POST "/app/copd/voice/file" \
      -F "file=@./audio.wav" \
-     -F "USER_UUID=patient-001" \
+     -F "USER_UUID=SS00001" \
      -F "transcription=안녕하세요"
 ```
 
@@ -155,13 +155,13 @@ app/
 # Windows PowerShell에서
 curl.exe -X POST "http://localhost:8000/app/copd/voice/file" \
          -F "file=@./audio_sample.wav" \
-         -F "USER_UUID=patient-001" \
+         -F "USER_UUID=SS00001" \
          -F "transcription=테스트 음성입니다"
 
 # Linux/macOS에서
 curl -X POST "http://localhost:8000/app/copd/voice/file" \
      -F "file=@./audio_sample.wav" \
-     -F "USER_UUID=patient-001" \
+     -F "USER_UUID=SS00001" \
      -F "transcription=테스트 음성입니다"
 ```
 

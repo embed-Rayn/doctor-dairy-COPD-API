@@ -9,9 +9,11 @@
 - **Basic** (`basic`) - 기본정보 (성별, 생년월일, 키, 몸무게, 교육수준)
 - **Oximeter** (`oximeter`) - 산소포화도 측정 (운동 전후 심박수, 산소포화도)
 - **Chair Stand** (`chair-stand`) - 의자 일어서기 검사 (30초간 횟수)
-- **Survey Voice** (`survey-voice`) - 설문조사 음성 (MBS, Borg RPE)
+- **Survey Voice** (`survey-voice`) - 설문조사 + 음성 데이터 (MBS, Borg RPE + 4개의 음성 파일)
+  - Chair Standing 전/후 "아~" 소리 2개
+  - Chair Standing 전/후  문단 읽기 음성 2개
 - **Survey** (`survey`) - 설문조사 일반 (CAT 8문항, mMRC, 흡연 관련)
-- **Voice** (`voice`) - 음성 데이터 (파일 경로, 전사 텍스트, 분석 결과)
+- **Voice** (`voice`) - 개별 음성 파일 업로드 (기존 호환성 유지용)
 
 
 ---
@@ -100,7 +102,7 @@ POST {{ADDRESS}}:{{PORT}}/app/copd/basic
 Content-Type: application/json
 
 {
-  "USER_UUID": "PATIENT_001",
+  "USER_UUID": "SS0001",
   "data": {
     "sex": 1,
     "birth": "1970-05-15",
@@ -117,7 +119,7 @@ POST {{ADDRESS}}:{{PORT}}/app/copd/oximeter
 Content-Type: application/json
 
 {
-  "USER_UUID": "PATIENT_001",
+  "USER_UUID": "SS0001",
   "data": {
     "pre_HR": 72.5,
     "pre_SpO2": 98.2,
@@ -133,26 +135,52 @@ POST {{ADDRESS}}:{{PORT}}/app/copd/chair-stand
 Content-Type: application/json
 
 {
-  "USER_UUID": "PATIENT_001",
+  "USER_UUID": "SS0001",
   "data": {
     "CS_count": 15.0
   }
 }
 ```
 
-#### 4. 설문조사(음성) 업로드
+#### 4. 설문조사(음성) + 4개 음성 파일 업로드
 ```http
 POST {{ADDRESS}}:{{PORT}}/app/copd/survey-voice
-Content-Type: application/json
+Content-Type: multipart/form-data
 
-{
-  "USER_UUID": "PATIENT_001",
-  "data": {
-    "MBS": 5,
-    "Borg_RPE": 12
-  }
-}
+Form Data:
+- USER_UUID: SS0001
+- MBS: 5
+- Borg_RPE: 12
+- voice_pre_ah: [audio file] - Chair Standing 전 "아~" 소리
+- voice_post_ah: [audio file] - Chair Standing 후 "아~" 소리
+- voice_pre_paragraph: [audio file] - Chair Standing 전 문단 읽기
+- voice_post_paragraph: [audio file] - Chair Standing 후 문단 읽기 
+- transcription_pre_ah: "아~" (optional)
+- transcription_post_ah: "아~" (optional)
+- transcription_pre_paragraph: "문단 내용..." (optional)
+- transcription_post_paragraph: "문단 내용..." (optional)
 ```
+
+**curl 예제:**
+```bash
+curl -X POST "http://localhost:8000/app/copd/survey-voice" \
+     -F "USER_UUID=SS00001" \
+     -F "MBS=5" \
+     -F "Borg_RPE=12" \
+     -F "voice_pre_ah=@./pre_ah.wav" \
+     -F "voice_post_ah=@./post_ah.wav" \
+     -F "voice_pre_paragraph=@./paragraph_1.wav" \
+     -F "voice_post_paragraph=@./paragraph_2.wav" \
+     -F "transcription_pre_ah=아~" \
+     -F "transcription_post_ah=아~" \
+     -F "transcription_pre_paragraph=첫 번째 문단 내용입니다" \
+     -F "transcription_post_paragraph=두 번째 문단 내용입니다"
+```
+
+**저장 위치:**
+- 파일: `./data/voice_files/YYYYMMDD/USER_UUID_{file_type}_timestamp_randomid.wav`
+- 파일 타입: `pre_ah`, `post_ah`, `paragraph_1`, `paragraph_2`
+- 메타데이터: JSON 형식으로 설문 데이터와 함께 저장
 
 #### 5. 설문조사(일반) 업로드
 ```http
@@ -160,7 +188,7 @@ POST {{ADDRESS}}:{{PORT}}/app/copd/survey
 Content-Type: application/json
 
 {
-  "USER_UUID": "PATIENT_001",
+  "USER_UUID": "SS0001",
   "data": {
     "CAT1": 2, "CAT2": 1, "CAT3": 0, "CAT4": 3,
     "CAT5": 2, "CAT6": 1, "CAT7": 0, "CAT8": 1,
@@ -174,33 +202,28 @@ Content-Type: application/json
 }
 ```
 
-#### 6. 음성 데이터 업로드 (메타데이터)
+#### 6. 개별 음성 파일 업로드 (기존 호환성 유지용)
 ```http
 POST {{ADDRESS}}:{{PORT}}/app/copd/voice
 Content-Type: application/json
 
 {
-  "USER_UUID": "PATIENT_001",
+  "USER_UUID": "SS0001",
   "data": {
     "voice_file_path": "/workspace/voice/sample.wav",
-    "voice_file_name": "sample.wav",
-    "voice_duration": 45.2,
-    "voice_format": "wav",
-    "voice_quality": "high",
-    "transcription": "안녕하세요...",
-    "analysis_result": "분석 결과..."
+    "transcription": "안녕하세요..."
   }
 }
 ```
 
-#### 7. 음성 파일 직접 업로드
+#### 7. 개별 음성 파일 직접 업로드 (기존 호환성 유지용)
 ```http
 POST {{ADDRESS}}:{{PORT}}/app/copd/voice/file
 Content-Type: multipart/form-data
 
 Form Data:
 - file: [audio file]
-- USER_UUID: PATIENT_001
+- USER_UUID: SS0001
 - transcription: 안녕하세요... (optional)
 ```
 
@@ -209,12 +232,12 @@ Form Data:
 # 필수 파라미터만 사용
 curl -X POST "http://localhost:8000/app/copd/voice/file" \
      -F "file=@./audio_sample.wav" \
-     -F "USER_UUID=patient-001"
+     -F "USER_UUID=SS00001"
 
 # 전사 텍스트 포함
 curl -X POST "http://localhost:8000/app/copd/voice/file" \
      -F "file=@./audio_sample.wav" \
-     -F "USER_UUID=patient-001" \
+     -F "USER_UUID=SS00001" \
      -F "transcription=안녕하세요, 테스트입니다"
 ```
 
@@ -261,7 +284,19 @@ curl -X POST http://localhost:8000/app/copd/basic \
     }
   }'
 
-# 음성 파일 업로드 테스트
+# 설문조사 + 음성 파일 업로드 테스트 (주요 엔드포인트)
+curl -X POST http://localhost:8000/app/copd/survey-voice \
+  -F "USER_UUID=TEST_001" \
+  -F "MBS=5" \
+  -F "Borg_RPE=12" \
+  -F "voice_pre_ah=@./test_pre_ah.wav" \
+  -F "voice_post_ah=@./test_post_ah.wav" \
+  -F "voice_pre_paragraph=@./test_pre_paragraph.wav" \
+  -F "voice_post_paragraph=@./test_post_paragraph.wav" \
+  -F "transcription_pre_ah=아~" \
+  -F "transcription_post_ah=아~"
+
+# 개별 음성 파일 업로드 테스트 (기존 호환성)
 curl -X POST http://localhost:8000/app/copd/voice/file \
   -F "file=@./test_audio.wav" \
   -F "USER_UUID=TEST_001" \

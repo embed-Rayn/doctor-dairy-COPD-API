@@ -34,10 +34,22 @@ class ChairStandRequest(BaseModel):
     USER_UUID: str = Field(..., description="환자 식별자 (호환성)")
     data: ChairStandData
 
-# 설문조사 그룹
+# 개별 음성 파일 데이터 (파일 업로드용)
+class SingleVoiceFile(BaseModel):
+    voice_file_path: str = Field(..., description="음성 파일 경로")
+    transcription: Optional[str] = Field(None, description="음성 전사 텍스트")
+
+# 설문조사 + 음성 데이터 통합 그룹
 class SurveyVoiceData(BaseModel):
+    # 설문조사 데이터
     MBS: int = Field(..., ge=0, le=10, description="Modified Borg Scale: 0~10")
     Borg_RPE: int = Field(..., ge=6, le=20, description="Rate of Perceived Exertion: 6~20")
+    
+    # 4개의 음성 데이터
+    voice_pre_ah: SingleVoiceFile = Field(..., description="Chair Standing 전 '아~' 소리")
+    voice_post_ah: SingleVoiceFile = Field(..., description="Chair Standing 후 '아~' 소리")
+    voice_pre_paragraph: SingleVoiceFile = Field(..., description="문단 읽기 1")
+    voice_post_paragraph: SingleVoiceFile = Field(..., description="문단 읽기 2")
 
 class SurveyVoiceRequest(BaseModel):
     USER_UUID: str = Field(..., description="환자 식별자 (호환성)")
@@ -56,15 +68,15 @@ class SurveyData(BaseModel):
     CAT_sum: int = Field(..., ge=0, le=40, description="CAT 총합: 0~40")
     mMRC: int = Field(..., ge=0, le=4, description="Modified Medical Research Council: 0~4")
     Smoke_CAT1: int = Field(..., ge=1, le=2, description="흡연 유무: 1~2")
-    Smoke_CAT2: int = Field(..., ge=1, le=2, description="금연 여부: 1~2")
-    Smoke_CAT3: int = Field(..., ge=1, le=3, description="금연 기간: 1~3")
+    Smoke_CAT2: int = Field(..., ge=1, le=3, description="금연 여부: 1~3")
+    Smoke_CAT3: int = Field(..., ge=1, le=4, description="금연 기간: 1~4")
     Smoke_CAT4: float = Field(..., ge=0, description="흡연량 (연속값)")
 
 class SurveyRequest(BaseModel):
     USER_UUID: str = Field(..., description="환자 식별자 (호환성)")
     data: SurveyData
 
-# 음성 데이터 그룹
+# 음성 파일 메타데이터 (기존 호환성 유지용 - Deprecated)
 class VoiceData(BaseModel):
     voice_file_path: str = Field(..., description="음성 파일 경로")
     transcription: Optional[str] = Field(None, description="음성 전사 텍스트")

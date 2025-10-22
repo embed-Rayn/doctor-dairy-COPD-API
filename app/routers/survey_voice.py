@@ -50,7 +50,7 @@ async def upload_survey_voice_data(
     
     # 업로드 디렉토리 설정 (날짜별 폴더 생성)
     today = datetime.now().strftime("%Y%m%d")
-    upload_dir = f"./data/voice_files/{today}"
+    upload_dir = f"/workspace/8889/data/voice_files/{today}"
     os.makedirs(upload_dir, exist_ok=True)
     
     # 파일 저장 함수

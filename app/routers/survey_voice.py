@@ -61,8 +61,10 @@ async def upload_survey_voice_data(
         file_path = os.path.join(upload_dir, safe_filename)
         
         try:
+            # 파일 내용을 읽어서 저장
+            contents = await file.read()
             with open(file_path, "wb") as buffer:
-                shutil.copyfileobj(file.file, buffer)
+                buffer.write(contents)
             
             return SingleVoiceFile(
                 voice_file_path=file_path,
@@ -73,8 +75,6 @@ async def upload_survey_voice_data(
             if os.path.exists(file_path):
                 os.remove(file_path)
             raise HTTPException(status_code=500, detail=f"파일 '{file.filename}' 업로드 실패: {str(e)}")
-        finally:
-            await file.close()
     
     try:
         # 4개의 음성 파일 저장

@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>HowToUse.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="copd-%ED%99%98%EC%9E%90-%ED%8F%89%EA%B0%80-api-%EC%82%AC%EC%9A%A9-%EA%B0%80%EC%9D%B4%EB%93%9C">COPD 환자 평가 API 사용 가이드</h1>
+<p>COPD(만성폐쇄성폐질환) 환자의 기본정보, 설문조사, 신체측정, 음성 데이터를 수집하는 API입니다.</p>
+<hr>
+<h2 id="%EC%84%9C%EB%B2%84-%EC%A0%95%EB%B3%B4">서버 정보</h2>
+<ul>
+<li><strong>서버 주소</strong>: <code>http://14.63.89.203:18000</code></li>
+<li><strong>API 경로</strong>: <code>/app/copd/{데이터타입}</code></li>
+<li><strong>요청 방식</strong>: <code>POST</code></li>
+</ul>
+<hr>
+<h2 id="%EC%A7%80%EC%9B%90-%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%83%80%EC%9E%85">지원 데이터 타입</h2>
+<table>
+<thead>
+<tr>
+<th>데이터 타입</th>
+<th>엔드포인트</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>기본정보</td>
+<td><code>/app/copd/basic</code></td>
+<td>성별, 생년월일, 키, 몸무게, 교육수준</td>
+</tr>
+<tr>
+<td>산소포화도</td>
+<td><code>/app/copd/oximeter</code></td>
+<td>운동 전후 심박수, 산소포화도</td>
+</tr>
+<tr>
+<td>의자 일어서기</td>
+<td><code>/app/copd/chair-stand</code></td>
+<td>30초간 의자 일어서기 횟수</td>
+</tr>
+<tr>
+<td>설문조사+음성</td>
+<td><code>/app/copd/survey-voice</code></td>
+<td>MBS, Borg RPE + 4개 음성 파일</td>
+</tr>
+<tr>
+<td>설문조사</td>
+<td><code>/app/copd/survey</code></td>
+<td>CAT 8문항, mMRC, 흡연 관련</td>
+</tr>
+</tbody>
+</table>
+<h3 id="%EC%9D%8C%EC%84%B1-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B5%AC%EC%84%B1-4%EA%B0%9C-%ED%95%84%EC%88%98">음성 데이터 구성 (4개 필수)</h3>
+<ul>
+<li>Chair Standing 전 &quot;아~&quot; 소리</li>
+<li>Chair Standing 후 &quot;아~&quot; 소리</li>
+<li>Chair Standing 전 문단 읽기</li>
+<li>Chair Standing 후 문단 읽기</li>
+</ul>
+<hr>
+<h2 id="api-%EC%97%94%EB%93%9C%ED%8F%AC%EC%9D%B8%ED%8A%B8">API 엔드포인트</h2>
+<h3 id="1-%EA%B8%B0%EB%B3%B8%EC%A0%95%EB%B3%B4-%EC%97%85%EB%A1%9C%EB%93%9C">1. 기본정보 업로드</h3>
+<p>환자의 기본 신체정보를 전송합니다.</p>
+<p><strong>엔드포인트</strong>: <code>POST /app/copd/basic</code></p>
+<p><strong>요청 예제</strong>:</p>
+<pre class="hljs"><code><div>curl -X POST <span class="hljs-string">"http://14.63.89.203:18000/app/copd/basic"</span> \
+  -H <span class="hljs-string">"Content-Type: application/json"</span> \
+  -d <span class="hljs-string">'{
+    "USER_UUID": "SS00001",
+    "data": {
+      "sex": 1,
+      "birth": "1970-05-15",
+      "height": 175.5,
+      "weight": 70.2,
+      "education": 4
+    }
+  }'</span>
+</div></code></pre>
+<p><strong>파라미터</strong>:</p>
+<ul>
+<li><code>sex</code>: 성별 (1=남성, 2=여성)</li>
+<li><code>birth</code>: 생년월일 (YYYY-MM-DD)</li>
+<li><code>height</code>: 키 (cm)</li>
+<li><code>weight</code>: 몸무게 (kg)</li>
+<li><code>education</code>: 교육수준 (1~6)</li>
+</ul>
+<hr>
+<h3 id="2-%EC%82%B0%EC%86%8C%ED%8F%AC%ED%99%94%EB%8F%84-%EC%B8%A1%EC%A0%95-%EC%97%85%EB%A1%9C%EB%93%9C">2. 산소포화도 측정 업로드</h3>
+<p>운동 전후의 심박수와 산소포화도를 전송합니다.</p>
+<p><strong>엔드포인트</strong>: <code>POST /app/copd/oximeter</code></p>
+<p><strong>요청 예제</strong>:</p>
+<pre class="hljs"><code><div>curl -X POST <span class="hljs-string">"http://14.63.89.203:18000/app/copd/oximeter"</span> \
+  -H <span class="hljs-string">"Content-Type: application/json"</span> \
+  -d <span class="hljs-string">'{
+    "USER_UUID": "SS00001",
+    "data": {
+      "pre_HR": 72.5,
+      "pre_SpO2": 98.2,
+      "post_HR": 85.3,
+      "post_SpO2": 96.8
+    }
+  }'</span>
+</div></code></pre>
+<p><strong>파라미터</strong>:</p>
+<ul>
+<li><code>pre_HR</code>: 운동 전 심박수 (bpm)</li>
+<li><code>pre_SpO2</code>: 운동 전 산소포화도 (%)</li>
+<li><code>post_HR</code>: 운동 후 심박수 (bpm)</li>
+<li><code>post_SpO2</code>: 운동 후 산소포화도 (%)</li>
+</ul>
+<hr>
+<h3 id="3-%EC%9D%98%EC%9E%90-%EC%9D%BC%EC%96%B4%EC%84%9C%EA%B8%B0-%EA%B2%80%EC%82%AC-%EC%97%85%EB%A1%9C%EB%93%9C">3. 의자 일어서기 검사 업로드</h3>
+<p>30초간 의자에서 일어선 횟수를 전송합니다.</p>
+<p><strong>엔드포인트</strong>: <code>POST /app/copd/chair-stand</code></p>
+<p><strong>요청 예제</strong>:</p>
+<pre class="hljs"><code><div>curl -X POST <span class="hljs-string">"http://14.63.89.203:18000/app/copd/chair-stand"</span> \
+  -H <span class="hljs-string">"Content-Type: application/json"</span> \
+  -d <span class="hljs-string">'{
+    "USER_UUID": "SS00001",
+    "data": {
+      "CS_count": 15.0
+    }
+  }'</span>
+</div></code></pre>
+<p><strong>파라미터</strong>:</p>
+<ul>
+<li><code>CS_count</code>: 30초간 의자 일어서기 횟수</li>
+</ul>
+<hr>
+<h3 id="4-%EC%84%A4%EB%AC%B8%EC%A1%B0%EC%82%AC--%EC%9D%8C%EC%84%B1-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%97%85%EB%A1%9C%EB%93%9C">4. 설문조사 + 음성 데이터 업로드</h3>
+<p>MBS, Borg RPE 설문 데이터와 4개의 음성 파일을 함께 전송합니다.</p>
+<p><strong>엔드포인트</strong>: <code>POST /app/copd/survey-voice</code></p>
+<p><strong>Content-Type</strong>: <code>multipart/form-data</code></p>
+<p><strong>요청 예제</strong>:</p>
+<pre class="hljs"><code><div>curl -X POST <span class="hljs-string">"http://14.63.89.203:18000/app/copd/survey-voice"</span> \
+     -F <span class="hljs-string">"USER_UUID=SS00001"</span> \
+     -F <span class="hljs-string">"MBS=5"</span> \
+     -F <span class="hljs-string">"Borg_RPE=12"</span> \
+     -F <span class="hljs-string">"voice_pre_ah=@./pre_ah.wav"</span> \
+     -F <span class="hljs-string">"voice_post_ah=@./post_ah.wav"</span> \
+     -F <span class="hljs-string">"voice_pre_paragraph=@./pre_paragraph.wav"</span> \
+     -F <span class="hljs-string">"voice_post_paragraph=@./post_paragraph.wav"</span> \
+     -F <span class="hljs-string">"transcription_pre_ah=아~"</span> \
+     -F <span class="hljs-string">"transcription_post_ah=아~"</span> \
+     -F <span class="hljs-string">"transcription_pre_paragraph=가을이 되니 산에 단풍이 들었습니다"</span> \
+     -F <span class="hljs-string">"transcription_post_paragraph=바람이 불어 나뭇잎이 떨어집니다"</span>
+</div></code></pre>
+<p><strong>필수 파라미터</strong>:</p>
+<ul>
+<li><code>USER_UUID</code>: 환자 ID (예: SS00001)</li>
+<li><code>MBS</code>: Modified Borg Scale (0~10)</li>
+<li><code>Borg_RPE</code>: Rate of Perceived Exertion (6~20)</li>
+<li><code>voice_pre_ah</code>: Chair Standing 전 &quot;아~&quot; 소리 파일</li>
+<li><code>voice_post_ah</code>: Chair Standing 후 &quot;아~&quot; 소리 파일</li>
+<li><code>voice_pre_paragraph</code>: Chair Standing 전 문단 읽기 파일</li>
+<li><code>voice_post_paragraph</code>: Chair Standing 후 문단 읽기 파일</li>
+</ul>
+<p><strong>선택 파라미터</strong>:</p>
+<ul>
+<li><code>transcription_pre_ah</code>: 전 &quot;아~&quot; 소리 전사 텍스트</li>
+<li><code>transcription_post_ah</code>: 후 &quot;아~&quot; 소리 전사 텍스트</li>
+<li><code>transcription_pre_paragraph</code>: 전 문단 읽기 전사 텍스트</li>
+<li><code>transcription_post_paragraph</code>: 후 문단 읽기 전사 텍스트</li>
+</ul>
+<p><strong>주의사항</strong>:</p>
+<ul>
+<li>음성 파일은 wav, mp3, m4a 등 오디오 형식만 가능</li>
+<li>각 파일 최대 크기: 50MB</li>
+<li><code>@</code> 기호 뒤에 실제 파일 경로를 입력</li>
+</ul>
+<hr>
+<h3 id="5-%EC%84%A4%EB%AC%B8%EC%A1%B0%EC%82%AC-%EC%9D%BC%EB%B0%98-%EC%97%85%EB%A1%9C%EB%93%9C">5. 설문조사 (일반) 업로드</h3>
+<p>CAT 설문, mMRC, 흡연 관련 설문 데이터를 전송합니다.</p>
+<p><strong>엔드포인트</strong>: <code>POST /app/copd/survey</code></p>
+<p><strong>요청 예제</strong>:</p>
+<pre class="hljs"><code><div>curl -X POST <span class="hljs-string">"http://14.63.89.203:18000/app/copd/survey"</span> \
+  -H <span class="hljs-string">"Content-Type: application/json"</span> \
+  -d <span class="hljs-string">'{
+    "USER_UUID": "SS00001",
+    "data": {
+      "CAT1": 2, "CAT2": 1, "CAT3": 0, "CAT4": 3,
+      "CAT5": 2, "CAT6": 1, "CAT7": 0, "CAT8": 1,
+      "CAT_sum": 10,
+      "mMRC": 2,
+      "Smoke_CAT1": 1,
+      "Smoke_CAT2": 2,
+      "Smoke_CAT3": 3,
+      "Smoke_CAT4": 10.5
+    }
+  }'</span>
+</div></code></pre>
+<p><strong>파라미터</strong>:</p>
+<ul>
+<li><code>CAT1~CAT8</code>: CAT 설문 각 문항 (0~5)</li>
+<li><code>CAT_sum</code>: CAT 총합 (0~40)</li>
+<li><code>mMRC</code>: Modified Medical Research Council (0~4)</li>
+<li><code>Smoke_CAT1</code>: 흡연 유무 (1~2)</li>
+<li><code>Smoke_CAT2</code>: 금연 여부 (1~3)</li>
+<li><code>Smoke_CAT3</code>: 금연 기간 (1~4)</li>
+<li><code>Smoke_CAT4</code>: 흡연량 (연속값)</li>
+</ul>
+<hr>
+<h2 id="%EC%9D%91%EB%8B%B5-%ED%98%95%EC%8B%9D">응답 형식</h2>
+<h3 id="%EC%84%B1%EA%B3%B5-%EC%9D%91%EB%8B%B5">성공 응답</h3>
+<p>모든 API는 성공 시 다음과 같은 형식으로 응답합니다:</p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"status"</span>: <span class="hljs-string">"success"</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Data saved successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"USER_UUID"</span>: <span class="hljs-string">"SS00001"</span>,
+    <span class="hljs-attr">"timestamp"</span>: <span class="hljs-string">"2025-01-21T10:30:00"</span>
+  }
+}
+</div></code></pre>
+<h3 id="%EC%98%A4%EB%A5%98-%EC%9D%91%EB%8B%B5">오류 응답</h3>
+<h4 id="%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0-%EA%B2%80%EC%A6%9D-%EC%98%A4%EB%A5%98">파라미터 검증 오류</h4>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"detail"</span>: [
+    {
+      <span class="hljs-attr">"loc"</span>: [<span class="hljs-string">"body"</span>, <span class="hljs-string">"data"</span>, <span class="hljs-string">"MBS"</span>],
+      <span class="hljs-attr">"msg"</span>: <span class="hljs-string">"ensure this value is less than or equal to 10"</span>,
+      <span class="hljs-attr">"type"</span>: <span class="hljs-string">"value_error.number.not_le"</span>
+    }
+  ]
+}
+</div></code></pre>
+<h4 id="%ED%8C%8C%EC%9D%BC-%ED%98%95%EC%8B%9D-%EC%98%A4%EB%A5%98">파일 형식 오류</h4>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"detail"</span>: <span class="hljs-string">"파일 'document.pdf': 지원하지 않는 파일 형식입니다. 허용 형식: .wav, .mp3, .m4a, .ogg, .flac"</span>
+}
+</div></code></pre>
+<h4 id="%ED%8C%8C%EC%9D%BC-%ED%81%AC%EA%B8%B0-%EC%B4%88%EA%B3%BC">파일 크기 초과</h4>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"detail"</span>: <span class="hljs-string">"파일 'large_audio.wav' 크기가 너무 큽니다. (최대 50MB)"</span>
+}
+</div></code></pre>
+<hr>
+<h2 id="%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B2%80%EC%A6%9D-%EA%B7%9C%EC%B9%99">데이터 검증 규칙</h2>
+<h3 id="%EC%A0%95%EC%88%98%ED%98%95-int-%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0">정수형 (int) 파라미터</h3>
+<ul>
+<li>지정된 범위 내의 값만 허용 (예: 1~2, 0~5, 6~20)</li>
+<li>범위를 벗어날 경우 검증 오류 반환</li>
+</ul>
+<h3 id="%EC%8B%A4%EC%88%98%ED%98%95-float-%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0">실수형 (float) 파라미터</h3>
+<ul>
+<li>양수 값 필수</li>
+<li>연속형 데이터 (continuous)</li>
+</ul>
+<h3 id="%EB%AC%B8%EC%9E%90%EC%97%B4-string-%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0">문자열 (String) 파라미터</h3>
+<ul>
+<li>날짜 필드: ISO 8601 형식 (YYYY-MM-DD)</li>
+<li>파일 경로: 절대 경로 또는 상대 경로</li>
+</ul>
+<h3 id="%ED%8C%8C%EC%9D%BC-%EC%97%85%EB%A1%9C%EB%93%9C">파일 업로드</h3>
+<ul>
+<li>지원 형식: wav, mp3, m4a, ogg, flac</li>
+<li>최대 크기: 50MB/파일</li>
+<li>Content-Type: audio/*</li>
+</ul>
+<hr>
+<h2 id="%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0">문제 해결</h2>
+<h3 id="curl-%EB%AA%85%EB%A0%B9%EC%96%B4-%EC%8B%A4%ED%96%89-%EC%98%A4%EB%A5%98">curl 명령어 실행 오류</h3>
+<p>Windows에서는 <code>curl.exe</code>를 사용하거나, Postman 같은 API 테스트 도구를 사용하세요.</p>
+<h3 id="%ED%8C%8C%EC%9D%BC-%EA%B2%BD%EB%A1%9C-%EC%98%A4%EB%A5%98">파일 경로 오류</h3>
+<p><code>@</code> 기호 뒤에는 실제 파일이 있는 전체 경로를 입력하세요.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 현재 디렉토리의 파일</span>
+-F <span class="hljs-string">"voice_pre_ah=@pre_ah.wav"</span>
+
+<span class="hljs-comment"># 절대 경로 (Unix/Mac)</span>
+-F <span class="hljs-string">"voice_pre_ah=@/Users/username/Desktop/pre_ah.wav"</span>
+
+<span class="hljs-comment"># 절대 경로 (Windows)</span>
+-F <span class="hljs-string">"voice_pre_ah=@C:/Users/username/Desktop/pre_ah.wav"</span>
+</div></code></pre>
+<h3 id="json-%ED%98%95%EC%8B%9D-%EC%98%A4%EB%A5%98">JSON 형식 오류</h3>
+<p>JSON 데이터는 큰따옴표(<code>&quot;</code>)를 사용해야 하며, 마지막 항목에는 쉼표를 붙이지 않습니다.</p>
+<h3 id="%EC%84%9C%EB%B2%84-%EC%97%B0%EA%B2%B0-%EC%98%A4%EB%A5%98">서버 연결 오류</h3>
+<p>서버 주소(<code>http://14.63.89.203:18000</code>)가 정확한지, 네트워크 연결이 정상인지 확인하세요.</p>
+<hr>
+<h2 id="%EC%A0%80%EC%9E%A5-%EC%9C%84%EC%B9%98">저장 위치</h2>
+<p><strong>파일 저장 경로</strong>: <code>/workspace/8889/data/voice_files/YYYYMMDD/</code></p>
+<p><strong>파일명 형식</strong>: <code>{USER_UUID}_{file_type}_{timestamp}_{random_id}.{extension}</code></p>
+<p><strong>예시</strong>:</p>
+<ul>
+<li><code>SS00001_pre_ah_20250121_143052_a1b2c3d4.wav</code></li>
+<li><code>SS00001_post_ah_20250121_143055_e5f6g7h8.wav</code></li>
+<li><code>SS00001_pre_paragraph_20250121_143058_i9j0k1l2.wav</code></li>
+<li><code>SS00001_post_paragraph_20250121_143101_m3n4o5p6.wav</code></li>
+</ul>
+<hr>
+<p><strong>마지막 업데이트</strong>: 2025년 10월 21일</p>
+<pre class="hljs"><code><div>
+---
+</div></code></pre>
+
+</body>
+</html>

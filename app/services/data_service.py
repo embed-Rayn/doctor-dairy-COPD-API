@@ -42,7 +42,7 @@ def save_data(data):
     data_type = _extract_data_type(data)
     now = datetime.now()
     date_part = now.strftime("%Y%m%d")
-    timestamp = now.strftime("%H%M%S%f")
+    timestamp = now.strftime("%H%M%S")
     filename = f"{date_part}_{timestamp}_{data_type}.json"
     filepath = os.path.join(save_dir, filename)
 

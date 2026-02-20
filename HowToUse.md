@@ -294,15 +294,18 @@ JSON 데이터는 큰따옴표(`"`)를 사용해야 하며, 마지막 항목에�
 
 ## 저장 위치
 
-**파일 저장 경로**: `/workspace/8889/data/voice_files/YYYYMMDD/`
+**파일 저장 경로**: `./data/USER_UUID/`
 
-**파일명 형식**: `{USER_UUID}_{file_type}_{timestamp}_{random_id}.{extension}`
+**파일명 형식**:
+- 음성 파일: `YYYYMMDD_timestamp_{file_type}_{random_id}.{extension}`
+- JSON 메타데이터: `YYYYMMDD_timestamp_{data_type}.json`
 
 **예시**:
-- `SS00001_pre_ah_20250121_143052_a1b2c3d4.wav`
-- `SS00001_post_ah_20250121_143055_e5f6g7h8.wav`
-- `SS00001_pre_paragraph_20250121_143058_i9j0k1l2.wav`
-- `SS00001_post_paragraph_20250121_143101_m3n4o5p6.wav`
+- `20250121_143052123456_pre_ah_a1b2c3d4.wav`
+- `20250121_143055123456_post_ah_e5f6g7h8.wav`
+- `20250121_143058123456_paragraph_1_i9j0k1l2.wav`
+- `20250121_143101123456_paragraph_2_m3n4o5p6.wav`
+- `20250121_143102123456_basic.json`
 
 ---
 

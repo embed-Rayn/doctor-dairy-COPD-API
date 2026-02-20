@@ -38,14 +38,15 @@ async def upload_voice_file(
                 detail=f"지원하지 않는 파일 형식입니다. 허용 형식: {', '.join(allowed_extensions)}"
             )
     
-    # 업로드 디렉토리 설정 (날짜별 폴더 생성)
-    today = datetime.now().strftime("%Y%m%d")
-    upload_dir = f"/workspace/8889/data/voice_files/{today}"
+    # 업로드 디렉토리 설정 (USER_UUID 중심)
+    upload_dir = os.path.join(".", "data", USER_UUID)
     os.makedirs(upload_dir, exist_ok=True)
     
-    # 안전한 파일명 생성 (타임스탬프 + 원본명)
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    safe_filename = f"{USER_UUID}_{timestamp}_{uuid.uuid4().hex[:8]}{file_extension}"
+    # 파일명: YYYYMMDD_timestamp_*.*
+    now = datetime.now()
+    date_part = now.strftime("%Y%m%d")
+    timestamp = now.strftime("%H%M%S%f")
+    safe_filename = f"{date_part}_{timestamp}_{uuid.uuid4().hex[:8]}{file_extension}"
     file_path = os.path.join(upload_dir, safe_filename)
     
     try:

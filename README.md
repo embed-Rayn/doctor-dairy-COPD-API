@@ -178,9 +178,9 @@ curl -X POST "http://localhost:8000/app/copd/survey-voice" \
 ```
 
 **저장 위치:**
-- 파일: `./data/voice_files/YYYYMMDD/USER_UUID_{file_type}_timestamp_randomid.wav`
+- 파일: `./data/USER_UUID/YYYYMMDD_timestamp_{file_type}_randomid.wav`
 - 파일 타입: `pre_ah`, `post_ah`, `paragraph_1`, `paragraph_2`
-- 메타데이터: JSON 형식으로 설문 데이터와 함께 저장
+- 메타데이터: `./data/USER_UUID/YYYYMMDD_timestamp_survey_voice.json` 형태로 저장
 
 #### 5. 설문조사(일반) 업로드
 ```http
@@ -242,8 +242,8 @@ curl -X POST "http://localhost:8000/app/copd/voice/file" \
 ```
 
 **저장 위치:**
-- 파일: `./data/voice_files/YYYYMMDD/USER_UUID_timestamp_randomid.wav`
-- 메타데이터: `./data/unknown_timestamp.json`
+- 파일: `./data/USER_UUID/YYYYMMDD_timestamp_randomid.wav`
+- 메타데이터: `./data/USER_UUID/YYYYMMDD_timestamp_voice.json`
 
 ## 데이터 검증 규칙
 
@@ -255,7 +255,7 @@ curl -X POST "http://localhost:8000/app/copd/voice/file" \
 
 ### 음성 파일 제한사항
 - **지원 형식**: audio/* (wav, mp3, m4a 등)
-- **저장 위치**: `/workspace/8889/voice_files/`
+- **저장 위치**: `./data/USER_UUID/`
 - **메타데이터**: 파일 경로, 길이, 품질, 전사 텍스트, 분석 결과
 
 ## 테스트
